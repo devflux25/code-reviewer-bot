@@ -33,33 +33,42 @@ if review_clicked or fix_clicked or explain_clicked:
     with tab1:
         if review_clicked:
             with st.spinner("Reviewing your code..."):
-                prompt = f"""
-                Review this {language} code in 150 words max:
-                {code}
-                1. Bugs found
-                2. Top 2 improvements
-                3. Score out of 10
-                """
-                response = model.generate_content(prompt)
-                st.write(response.text)
+                try:
+                    prompt = f"""
+                    Review this {language} code in 150 words max:
+                    {code}
+                    1. Bugs found
+                    2. Top 2 improvements
+                    3. Score out of 10
+                    """
+                    response = model.generate_content(prompt)
+                    st.write(response.text)
+                except Exception:
+                    st.error("⚠️ API limit reached. Please try again tomorrow.")
         else:
             st.info("Click 'Review My Code' to see results here.")
 
     with tab2:
         if fix_clicked:
             with st.spinner("Fixing your code..."):
-                fix_prompt = f"Fix this {language} code and return only corrected code with no explanation: {code}"
-                fix_response = model.generate_content(fix_prompt)
-                st.code(fix_response.text)
+                try:
+                    fix_prompt = f"Fix this {language} code and return only corrected code with no explanation: {code}"
+                    fix_response = model.generate_content(fix_prompt)
+                    st.code(fix_response.text)
+                except Exception:
+                    st.error("⚠️ API limit reached. Please try again tomorrow.")
         else:
             st.info("Click 'Fix My Code' to see results here.")
 
     with tab3:
         if explain_clicked:
             with st.spinner("Explaining your code..."):
-                explain_prompt = f"Explain this {language} code line by line in simple English for a beginner: {code}"
-                explain_response = model.generate_content(explain_prompt)
-                st.write(explain_response.text)
+                try:
+                    explain_prompt = f"Explain this {language} code line by line in simple English for a beginner: {code}"
+                    explain_response = model.generate_content(explain_prompt)
+                    st.write(explain_response.text)
+                except Exception:
+                    st.error("⚠️ API limit reached. Please try again tomorrow.")
         else:
             st.info("Click 'Explain My Code' to see results here.")
 
