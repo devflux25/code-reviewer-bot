@@ -17,9 +17,7 @@ language = st.selectbox("Select Language",["Python", "C++", "Java", "JavaScript"
 
 code = st.text_area("Paste your code here",height=250)
 
-col1, col2, col3 = st.columns([2, 2, 5])
-
-
+col1, col2, col3, col4 = st.columns([1, 1, 1, 3])
 
 with col1:
     review_clicked = st.button("Review My Code")
@@ -28,41 +26,40 @@ with col2:
 with col3:
     explain_clicked = st.button("Explain My Code")
 
-# output displayed here — full width
-if review_clicked:
-    if code.strip() == "":
-        st.warning("Please paste some code first!")
-    else:
-        with st.spinner("Reviewing your code..."):
-            prompt = f"""
-            Review this {language} code:
-            
-            {code}
-            
-            Give me:
-            1. Bugs found
-            2. Improvements suggested
-            3. Code quality score out of 10
-            """
-            response = model.generate_content(prompt)
-            st.write(response.text)
+# output tabs
+if review_clicked or fix_clicked or explain_clicked:
+    tab1, tab2, tab3 = st.tabs(["Review", "Fix", "Explain"])
 
-if fix_clicked:
-    if code.strip() == "":
-        st.warning("Please paste some code first!")
-    else:
-        with st.spinner("Fixing your code..."):
-            fix_prompt = f"Fix this {language} code and return only the corrected code with no explanation: {code}"
-            fix_response = model.generate_content(fix_prompt)
-            st.code(fix_response.text)  
+    with tab1:
+        if review_clicked:
+            with st.spinner("Reviewing your code..."):
+                prompt = f"""
+                Review this {language} code in 150 words max:
+                {code}
+                1. Bugs found
+                2. Top 2 improvements
+                3. Score out of 10
+                """
+                response = model.generate_content(prompt)
+                st.write(response.text)
+        else:
+            st.info("Click 'Review My Code' to see results here.")
 
-if explain_clicked:
-    if code.strip() == "":
-        st.warning("Please paste some code first!")
-    else:
-        with st.spinner("Explainng Your Code"):
-            explain_prompt = f""
-            explain_response = model.generate_content(explain_prompt)
-            st.code(explain_response.text)
+    with tab2:
+        if fix_clicked:
+            with st.spinner("Fixing your code..."):
+                fix_prompt = f"Fix this {language} code and return only corrected code with no explanation: {code}"
+                fix_response = model.generate_content(fix_prompt)
+                st.code(fix_response.text)
+        else:
+            st.info("Click 'Fix My Code' to see results here.")
 
+    with tab3:
+        if explain_clicked:
+            with st.spinner("Explaining your code..."):
+                explain_prompt = f"Explain this {language} code line by line in simple English for a beginner: {code}"
+                explain_response = model.generate_content(explain_prompt)
+                st.write(explain_response.text)
+        else:
+            st.info("Click 'Explain My Code' to see results here.")
 
