@@ -7,10 +7,31 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 st.markdown("""
 <style>
-div.stButton > button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
+/* gradient background */
+.stApp {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+}
+
+/* glassmorphism card effect */
+.block-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem 3rem;
+    margin-top: 2rem;
+}
+
+/* font change */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Space Grotesk', sans-serif !important;
+}
+
+h1 {
+    font-weight: 700 !important;
+    letter-spacing: -0.5px !important;
 }
 </style>
 """, unsafe_allow_html=True)
