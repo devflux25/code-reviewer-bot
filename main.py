@@ -5,6 +5,16 @@ from dotenv import load_dotenv
 load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
+st.markdown("""
+<style>
+div.stButton > button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+}
+</style>
+""", unsafe_allow_html=True)
+
 
 
 model = genai.GenerativeModel("gemini-2.5-flash")
@@ -17,14 +27,17 @@ language = st.selectbox("Select Language",["Python", "C++", "Java", "JavaScript"
 
 code = st.text_area("Paste your code here",height=250)
 
+st.divider()
+st.subheader("What do you want to do?")
+
 col1, col2, col3, col4 = st.columns([1, 1, 1, 3])
 
 with col1:
-    review_clicked = st.button("Review My Code")
+    review_clicked = st.button("🔍 Review")
 with col2:
-    fix_clicked = st.button("Fix My Code")
+    fix_clicked = st.button("🔧 Fix")
 with col3:
-    explain_clicked = st.button("Explain My Code")
+    explain_clicked = st.button("💡 Explain")
 
 # output tabs
 if review_clicked or fix_clicked or explain_clicked:
@@ -71,4 +84,3 @@ if review_clicked or fix_clicked or explain_clicked:
                     st.error("⚠️ API limit reached. Please try again tomorrow.")
         else:
             st.info("Click 'Explain My Code' to see results here.")
-
